@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres_container
+    network_mode: "host"
+    image: postgres:14
+      #user: 1000:1000
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - /data/pgdata:/data/postgres
+      - /qib/services/galaxy/galaxy_backup_db:/data/backup
+      - /data/docker-postgresql/config/pg_hba.conf:/data/postgres/pg_hba.conf
+      - /data/docker-postgresql/config/postgresql.conf:/data/postgres/postgresql.conf
+        #- postgres:/data/postgres
+    ports:
+      - "5432:5432"
+        #networks:
+        #- postgres
+    restart: unless-stopped
